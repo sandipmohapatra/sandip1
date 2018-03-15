@@ -1,0 +1,130 @@
+Grunt :-
+----------------
+1)It is a javascript Task Runner which can be used in command line tool.
+
+2)For different task we have different plugins.
+
+3)It is written on the top of of  NodeJS.
+
+4)It does many task like 1)compilation 2)unit testing 3)minfying files.4)running tests.
+
+5)it includes built-in tasks that is performed by the help of plugins and scripts.
+
+6)the main purpose is we can automate anything with less effort.
+
+8)grunt makes the workflow as easy as writing setup files.
+
+9)we can automate repetitive tasks with minimum efforts.
+
+10)grunts reduces the chance of getting error while performing repetitive tasks.
+
+11)Grunt currently have over 4000 plugins.
+
+12)it can be used for big production projects.
+--------------------------------------------------------------------------------------------------
+how to install grunt
+---------------------------------------  
+1)check node -v
+2)check npm -v
+3)npm install -g grunt-cli
+4)create a folder ,goto the folder in command prompt
+5)create a folder again by name MyApp goto that folder
+6)npm init
+7)npm install grunt --save
+-----------------------------------------------------------------------
+8)
+example:-
+module.export = function(grunt)
+{
+grunt.initConfig({
+pkg: grunt.file.readJSON('package.json');
+copy:
+{
+t1:{
+src:'dir1/*',
+dest:'dir2/'
+}
+}
+});
+
+grunt.loadNpmTasks('grunt-contrib-copy');
+};
+---------------------------------------------------------------
+9)npm install grunt-contrib-copy --save
+
+10) create dir1 and put some files into it. and dir2
+
+11)grunt --gruntfile gruntfile.js copy
+
+-------------------------------------------
+12)grunt --gruntfile gruntfile.js jshint
+--------------------------------------------------------
+JShint :- it is a javscript term which help to detect low-quality code. 
+it is good to run this ervry time we edit any javascript source code.
+it is automated by using grunt.
+------------------------------------------------------------------------------------------------------
+ example:-
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+    jshint: {
+      files: ['Gruntfile.js', 'src/**/*.js', 'test/**/*.js'],
+      options: {
+        globals: {
+          jQuery: true
+        }
+      }
+    },
+    watch: {
+      files: ['<%= jshint.files %>'],
+      tasks: ['jshint']
+    }
+  });
+
+  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
+  grunt.registerTask('default', ['jshint']);
+
+};
+--------------------------------------------------------
+module.exports = function(grunt) {
+
+  grunt.initConfig({
+    pkg: grunt.file.readJSON('package.json'),
+    uglify:{
+      options: {
+        banner: 'This is a banner'},
+      build:
+      {
+        src: 'src/<%= pkg.name %>.js',
+        dest: 'build/<%= pkg.name %>.min.js'
+      }
+      }
+      });
+
+  grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  grunt.registerTask('default',['uglify']);
+};
+---------------------------------------------------------------
+Gulp :-
+----------------
+1)It is a javascript Task Runner which can be used in command line tool.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

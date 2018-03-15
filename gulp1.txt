@@ -1,0 +1,206 @@
+gulp :-
+--------------------------------------------------------------------
+1)it is a javascript task runner similar to grunt.
+2)Minify ccs files,js files,images,combine all js files into one.
+3)combine all css files into one.
+4)create deployable packages of your website.
+*including copying from source to target folder.
+5)compile SASS/LESS to css and minify.
+
+Automating Task
+-----------------------------------------
+1)Batch files(scripts) processing.
+2)shell/powershell script processing .
+3)It has its own developed utilities.
+
+------------------------------------------------------------
+to install gulp :-
+npm install gulp-cli -g
+-------------------------------------------------------------------
+
+steps to write an gulp script
+----------------------------------------
+1)Declaring required dependencies.
+2)creating task for the dependencies.
+3)running the task
+4)watching the task
+---------------------------------------------------------------------------------------
+to compress the image files we use
+1)gulp-imagemin 
+npm install gulp-imagemin --save-dev
+npm install gulp -D to install local 
+var imagemin = require('gulp-imagemin');
+-----------------------------------------------------------
+ example:-
+var imagemin = require('gulp-imagemin');
+gulp.task('imagemin',function(){
+var imgsrc='src/images/**/*', imgdest='image';
+
+gulp.src(imgsrc).pipe(changed(imgdest))
+.pipe(imagemin())
+.pipe(gulp.dest(imgdest));
+});
+------------------------------------------------------------------
+the images from the source files will compressed and will be copied to the destination.
+imagemin() acts as a constructor.
+----------------------------------------------------------------------------------------------------
+to run :- 
+gulp imagemin
+------------------------------------------------------
+example 1:-
+----------------------------
+glup-minify-html
+-------------------------------------
+var gulp=require('gulp'),
+minifyHtml = require("gulp-minify-html");
+
+gulp.task('minify-html',function()
+{
+gulp.src('./html/*.html')
+.pipe(minifyHtml())
+.pipe(gulp.dest('./dist/minify'));
+});
+----------------------------------------------------
+npm install gulp-minify-html --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp minify-html
+-------------------------------------------------------
+example 2:-
+----------------------------
+glup-minify-css
+-------------------------------------
+var gulp=require('gulp'),
+minifyCss = require("gulp-minify-css");
+
+gulp.task('minify-css',function()
+{
+gulp.src('./css/one.css')
+.pipe(minifyCss())
+.pipe(gulp.dest('./dist/minify'));
+});
+----------------------------------------------------
+npm install gulp-minify-css --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp minify-css
+-------------------------------------------------------
+example 3:-
+----------------------------
+glup-minify-javascript
+-------------------------------------
+var gulp=require('gulp'),
+uglify = require("gulp-uglify");
+
+gulp.task('minify-js',function()
+{
+gulp.src('./javascript/*.js')
+.pipe(uglify())
+.pipe(gulp.dest('./dist/minify'));
+});
+----------------------------------------------------
+npm install gulp-ugligy --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp minify-js
+-------------------------------------------------------
+example 4:-
+----------------------------
+glup-Linting-javascript(compile)
+-------------------------------------
+var gulp=require('gulp'),
+jshint = require("gulp-jshint");
+
+gulp.task('jsLint',function()
+{
+gulp.src('./javascript/*.js')
+.pipe(jshint())
+.pipe(jshint.reporter());
+});
+----------------------------------------------------
+npm install gulp-jshint --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp jsLint
+-------------------------------------------------------
+example 5:-
+----------------------------
+glup-concat-javascript
+-------------------------------------
+var gulp=require('gulp'),
+concat = require("gulp-concat");
+
+gulp.task('concat',function()
+{
+gulp.src('./javascript/*.js') // 2 or more javascript files.
+.pipe(concat('concat.js')) //concat and name it concat.js can give any name
+.pipe(gulp.dest('./dist/result'));
+});
+----------------------------------------------------
+npm install gulp-concat --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp concat
+-------------------------------------------------------
+example 6:-
+----------------------------
+glup-header (add some header info)
+-------------------------------------
+var gulp=require('gulp'),
+concat = require("gulp-concat"),
+header=require("gulp-header");
+
+var getCopyright = function()
+{
+return fs.readFileSync('copyright');
+};
+gulp.task('concat-copyright',function()
+{
+gulp.src('./javascript/*.js') 
+.pipe(concat('concat-copyright.js')) //concat and name it concat-copyright.js 
+.pipe(gulp.dest('./dist/result'));
+});
+----------------------------------------------------
+npm install gulp-header --save-dev
+-----------------------------------------------------------------------
+
+to run :-gulp concat-copyright
+-------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
