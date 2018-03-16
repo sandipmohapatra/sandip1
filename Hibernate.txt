@@ -1044,6 +1044,384 @@ viewResolver
 <beans:property name="prefix"
 <beans:property name="suffix"
 ---------------------------------------------------
+spring mvc+hibernate+oracle 10xe
+-------------------------------------------------------
+src----com.rahul------
+		bean
+		controller
+		dao  ----hibernate
+		model
+		service ---spring
+------resources-------database.properties
+
+webcontent-------web-inf
+		lib
+		views----html,jsp pages.
+---------------------------------------------------------------------------------------------
+bean 
+-------------
+//create table employee(empid,empname,empage,salary,empaddress)
+
+EmployeeBean
+{
+int id;
+String name,address;
+int age;
+int salary;
+getter(),setter();
+}
+---------------------------------------------------------------
+DAO
+-----------------
+interface
+--------------------
+public interface EmployeeDao
+{
+void addemployee(Employee emp);
+void List<Employee> listemp();
+Employee getEmployee(int empid);
+void deleteEmployee(Employee emp);
+-------------------------------------------
+DAOImp
+----------------
+@Repository("EmployeeDao")
+public class EmployeeDaoImp implements EmployeeDao
+{
+
+@Autowired
+private SessionFactory sf;
+
+public void addEmployee(Employee emp)
+{
+sf.getCurrentSession().saveOrUpdate(emp);
+}
+
+public List<Employee> listemp()
+{
+return (List<Employee> sf.getCurrentSession.createCriterria(Employee.class).list();
+}
+
+
+public Employee getEmployee(int empid)
+{
+return (Employee) sf.getCurrentSession().get(Employee.class,empid);
+}
+
+public void deleteEmployee(Employee emp)
+{
+sf.getCurrentSession().createQuery("delete from employee where empid="employee.getEmpid()).executeUpdate();
+}
+}
+------------------------------------
+Model
+------------------
+import java.io.Serializable;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+ 
+@Entity
+@Table(name="Employee")
+public class Employee implements Serializable{
+
+	
+	@Id
+	//@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name = "empid")
+	private Integer empId;
+	
+	@Column(name="empname")
+	private String empName;
+	
+	@Column(name="empaddress")
+	private String empAddress;
+	
+	@Column(name="salary")
+	private Long salary;
+	
+	@Column(name="empAge")
+	private Integer empAge;
+
+	public Integer getEmpId() {
+		return empId;
+	}
+
+	public void setEmpId(Integer empId) {
+		this.empId = empId;
+	}
+
+	public String getEmpName() {
+		return empName;
+	}
+
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+
+	public String getEmpAddress() {
+		return empAddress;
+	}
+
+	public void setEmpAddress(String empAddress) {
+		this.empAddress = empAddress;
+	}
+
+	public Long getSalary() {
+		return salary;
+	}
+
+	public void setSalary(Long salary) {
+		this.salary = salary;
+	}
+
+	public Integer getEmpAge() {
+		return empAge;
+	}
+
+	public void setEmpAge(Integer empAge) {
+		this.empAge = empAge;
+	}
+
+}
+
+
+------------------------------------------------------------
+service same to DAO
+----------------
+import java.util.List;
+public interface EmployeeService {
+	
+	public void addEmployee(Employee employee);
+
+	public List<Employee> listEmployeess();
+	
+	public Employee getEmployee(int empid);
+	
+	public void deleteEmployee(Employee employee);
+}
+---------------------------------------------
+serviceImp will link to the employeeDao
+-----------------------------------------------------
+@Service("employeeService")
+public class serviceImp implement  EmployeeService
+
+@private EmployeeDao empdao;
+
+@Transactional()
+public void addEmployee(Employee emp)
+{
+empdao.addEmployee(employee);
+}
+
+@Transactional()
+public List<Employee> listEmployee()
+{
+return empdao.listemp();
+}
+
+public Employee getEmployee(int empid)
+{
+return empdao.getEmployee(int empid);
+}
+
+public void deleteEmployee(Employee employee)
+{
+empdao.deleteEmployee(Employee emp);
+}
+------------------------------------
+database.properties
+-------------------------------
+database.driver=oracle.jdbc.driver.OracleDriver
+database.url=jdbc:oracle:thin:@localhost:1521:xe
+database.user=system
+database.password=1234
+hibernate.dialect=org.hibernate.dialect.OracleDialect
+hibernate.show_sql=true
+hibernate.hbm2ddl.auto=update
+----------------------------------------------------
+views ---jsp
+------------------------------
+addEmployee.jsp
+----------------------------
+<form method="post" action="springmvchiber/save.html">
+id<input type=text>
+name<input type=text>
+age<input type=text>
+salary<input type=text>
+address<input type=text>
+<submit>
+</form>
+
+<table>
+empid-----Employee name----age-----salary-----address----<href =edit.html>edit----<href=delete.html>delete
+</table>
+
+------------------------------------------------------------
+employeeList.jsp
+--------------------------------
+<a href=add.html>add more emplyee</a>
+redirect to addEmployee.jsp
+-----------------------------------------
+index.jsp
+-------------
+<a href="employee.html">List of employee</a>
+<a href="add.html">add employee</a>
+------------------------------------------------------------------------------
+Controller class.
+------------------------------
+public class EmployeeController
+{
+@Autowired
+private EmployeeService empservice;
+
+@RequestMapping(value="/save",method=RequestMethod.POST)
+public ModelAndView saveEmployee()
+{
+empservice.addEmployee(emp);
+return new ModelAndView("redirect:/add");
+}
+
+@RequestMapping(value="/employees",method=RequestMethod.get)
+public ModelAndView ListEmployee()
+{
+empservice.ListEmployee(emp);
+return new ModelAndView("employeeList",model);
+}
+
+@RequestMapping(value="/add",method=RequestMethod.get)
+public ModelAndView saveEmployee()
+{
+empservice.addEmployee(emp);
+return new ModelAndView("addEmployee",model);
+}
+
+@RequestMapping(value="/index",method=RequestMethod.get)
+public ModelAndView welcome()
+{
+return new ModelAndView("index");
+}
+
+@RequestMapping(value="/delete",method=RequestMethod.get)
+public ModelAndView deleteEmployee()
+{
+empservice.deleteEmployee(emp);
+model.put("employee",null);
+return new ModelAndView("addEmployee",model);
+}
+
+
+@RequestMapping(value="/edit",method=RequestMethod.get)
+public ModelAndView editEmployee()
+{
+empservice.editEmployee(emp);
+model.put("employee",null);
+return new ModelAndView("addEmployee",model);
+}
+
+---------------------------------------------------------
+Webservices
+------------------------
+1)we used distributed technology previously like corba,RMI,EJB.Webservices make the distributed application easier.It makes the implementation easier.
+2)webservice exchange the data in XML format.It is language independent.
+3)we have 1)service provider 2)service Register 3)service requester.
+
+There 2 types of webservice
+---------------------------------------
+1)SOAP :- simple object access protocol
+2)restful :- Representational state tranfer.
+--------------------------------
+advantage of webservice :-
+------------------------------------
+1)Interoperability:- By the help of webservices ,an application can communicate with other application developed in any language and any platform.
+2)reusability :-
+3)Modularity :-By the help of webservices we can create a service for a specific task.
+----------------------------------- 
+Restful webservice is faster than the soap .
+Restful webservice use http protocal and can also use SOAP protocal.
+permit different data format like plain text,html,xml,JSON.
+
+----------------------------------------------------------------------
+Difference
+----------------------
+soap:- it is a protocal
+rest:- is a architectural style.
+--------------------------------------------
+soap:- uses JAX-WS java api .
+rest :- uses JAX-RS java api.
+-------------------------------------------------
+soap :- uses only xml format
+rest:- uses different data format such as Plain Text,html,xml,json.
+------------------------------------------------------------------------------------------
+soap:- it is slower and uses more bandwidth and resource.
+rest:- it is faster and uses less bandwidth and resource.
+-------------------------------------------------------------------------------------------
+
+Annotation in Restful webservices
+---------------------------------------------------------------
+Javax.ws.rs package contains JAX-RS annotations.
+---------------------------------------------------------------
+1)Path :-It defines the URI path.It can also define class or method
+
+2)PathParam :-it represents the parameter of the URI path.
+
+3)get :- specifies methods responds to get request.
+
+4)post:- specifies methods responds to post request.
+
+5)put :- specifies methods responds to put request.
+
+6)delete :-specifies methods responds to delete request.
+
+---------------------------------------------------  
+1)get will provide read only access to a resource.
+
+2)put will be used to create new resource.
+
+3)delete will use to remove a resource.
+
+4)post will update an existing resource.
+
+----------------------------------------------------------------------------
+example :- 
+--------------------
+http method :-get 
+URI :- /userService/user
+operation:- get list of users
+--------------------------------------------------
+http method :-get 
+URI :- /userService/user/1
+operation:- get user with id=1
+---------------------------------------------------
+http method :-get 
+URI :- /userService/user/2
+operation:- get user with id=2
+------------------------------------------------------------------
+http method :post 
+URI :- /userService/user/1
+operation:- update user with id=1
+----------------------------------------------------
+http method :-delete 
+URI :- /userService/user/1
+operation:- delete user with id=1
+----------------------------------------------
+ * Restful webservice usually defines a URI which is a service that provides resource representation such as JSON and a set of HTTP methods.
+----------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 
