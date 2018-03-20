@@ -1,0 +1,325 @@
+---------------------------------------------------------
+Webservices
+------------------------
+1)we used distributed technology previously like corba,RMI,EJB.Webservices make the distributed application easier.It makes the implementation easier.
+2)webservice exchange the data in XML format.It is language independent.
+3)we have 1)service provider 2)service Register 3)service requester.
+
+There 2 types of webservice
+---------------------------------------
+1)SOAP :- simple object access protocol
+2)restful :- Representational state tranfer.
+--------------------------------
+advantage of webservice :-
+------------------------------------
+1)Interoperability:- By the help of webservices ,an application can communicate with other application developed in any language and any platform.
+2)reusability :-
+3)Modularity :-By the help of webservices we can create a service for a specific task.
+----------------------------------- 
+Restful webservice is faster than the soap .
+Restful webservice use http protocal and can also use SOAP protocal.
+permit different data format like plain text,html,xml,JSON.
+
+----------------------------------------------------------------------
+Difference
+----------------------
+soap:- it is a protocal
+rest:- is a architectural style.
+--------------------------------------------
+soap:- uses JAX-WS java api .
+rest :- uses JAX-RS java api.
+-------------------------------------------------
+soap :- uses only xml format
+rest:- uses different data format such as Plain Text,html,xml,json.
+------------------------------------------------------------------------------------------
+soap:- it is slower and uses more bandwidth and resource.
+rest:- it is faster and uses less bandwidth and resource.
+-------------------------------------------------------------------------------------------
+
+Annotation in Restful webservices
+---------------------------------------------------------------
+Javax.ws.rs package contains JAX-RS annotations.
+---------------------------------------------------------------
+1)Path :-It defines the URI path.It can also define class or method
+
+2)PathParam :-it represents the parameter of the URI path.
+
+3)get :- specifies methods responds to get request.
+
+4)post:- specifies methods responds to post request.
+
+5)put :- specifies methods responds to put request.
+
+6)delete :-specifies methods responds to delete request.
+
+---------------------------------------------------  
+1)get will provide read only access to a resource.
+
+2)put will be used to create new resource.
+
+3)delete will use to remove a resource.
+
+4)post will update an existing resource.
+
+----------------------------------------------------------------------------
+example :- 
+--------------------
+http method :-get 
+URI :- /userService/user
+operation:- get list of users
+--------------------------------------------------
+http method :-get 
+URI :- /userService/user/1
+operation:- get user with id=1
+---------------------------------------------------
+http method :-get 
+URI :- /userService/user/2
+operation:- get user with id=2
+------------------------------------------------------------------
+http method :post 
+URI :- /userService/user/1
+operation:- update user with id=1
+----------------------------------------------------
+http method :-delete 
+URI :- /userService/user/1
+operation:- delete user with id=1
+----------------------------------------------
+ * Restful webservice usually defines a URI which is a service that provides resource representation such as JSON and a set of HTTP methods.
+----------------------------------------------------------------
+what is webservices ?
+it is a client server application or component for communication.
+it should be in the network.
+it is language and os independent.
+--------------------------------------------------------------------
+Restful webservices uses (Jersey jar)
+--------------------------------------------------------------------
+firstrestfulapp
+---------------------
+index.html
+-------------------
+<html>
+<title>Employee Registration Page</title>
+<body>
+<form action="rest/product/add" method="post">
+Enter Id:<input type="text" name="id" /><br><br>
+Enter Name:<input type="text" name="id" /><br><br>
+Enter Price:<input type="text" name="id" /><br><br>
+<input type="submit" value="Add Product"/>
+</form>
+</body>
+</html>
+----------------------------------------------------------------------------------------
+ProductService.java
+-----------------------------------
+import javax.ws.rs.FormParam;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+@Path("/product")
+public class ProductService
+{
+@POST
+@Path("/add")
+public Response addUser(
+@FormParam("id") int id;
+@FormParam("name") String name;
+@FormParam("price") float price)
+{
+return Response.status(200)
+.entity("Product added successful!<br> Id: "+id+"<br>Name :"+name+"<br>Price :"+price)
+.build();
+}
+}
+----------------------------------------------------------------
+web.xml
+------------------------
+<servlet>
+<servlet-name>
+<init-param>
+<param-name>
+<param-name>
+</init-param>
+</servlet>
+<servlet-mapping>
+<servlet-name>
+<url-pattern>/rest/*</url-pattern>
+</servlet-mapping>
+---------------------------------------------------
+example 2:-
+--------------------------------
+index.html
+------------------------
+<a href="rest/hello/welcome-to-webservices">Click Here</a>
+---------------------------------------------------
+HelloService.java
+----------------------------
+import javax.ws.rs.PathParam;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Response;
+@Path("/hello")
+public class HelloService
+{
+@GET
+@Path("/{param}")
+public Response getMsg(@PathParam("param") String msg)
+{
+String output="Sandip says:"+msg;
+return Response.status(200).entity(output).build();
+}
+}
+
+------------------------------------------------------------
+web.xml
+------------------------
+<servlet>
+<servlet-name>
+<init-param>
+<param-name>
+<param-name>
+</init-param>
+</servlet>
+<servlet-mapping>
+<servlet-name>
+<url-pattern>/rest/*</url-pattern>
+</servlet-mapping>
+---------------------------------------------------
+Example 3:-
+------------------------
+spring-webservice-form validation
+-----------------------------------------------
+@Controller
+public class Mycontroller
+{
+@RequestMapping(value={"/","/home"},method=RequestMethod.GET)
+public String gotoHome()
+{
+return "index";
+}
+
+@RequestMapping(value={"/greet"},method=RequestMethod.GET)
+public ModelAndView gree() 
+{
+return new ModelAndView("greetPage","geeting","Hello welcome all");
+}
+
+@RequestMapping(value={"/greet2"},method=RequestMethod.GET)
+public ModelAndView gree() 
+{
+return new ModelAndView("greetPage","geeting","Hello welcome all");
+}
+
+
+@RequestMapping(value={"/greetWebUser"},method=RequestMethod.GET)
+public ModelAndView gree() 
+{
+return new ModelAndView("greetUserPage","geeting","Hello welcome all");
+}
+
+@RequestMapping(value={"/greetWebUser2"},method=RequestMethod.POST)
+public ModelAndView gree() 
+{
+return new ModelAndView("greetPage","geeting","Hello welcome all");
+}
+
+
+@RequestMapping(value={"/greetWebUser2"},method=RequestMethod.GET)
+public ModelAndView gree() 
+{
+return "greetPage";
+}
+
+
+-------------------------------------
+
+@Controller
+public class ViewResolverController
+{
+@RequestMapping(value="/interrescview",method=RequestMethod.GET)
+public String interrescview()
+{
+return "interrescview";
+}
+-----------------------------------------------------
+webuser.java
+-------------------------------
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+class WebUser
+{
+@NotNull
+@NotEmpty
+@Size(min =3,max=23,message ="user name should be between 3 to 23 char")
+@Min(value=1,message="age cannot be negative")
+@Max(value=100,message ="age cannot be over 100")
+
+private String userName;
+private int age;
+
+public WebUser()
+{}
+
+public WebUser(String userName,int age)
+{
+this.username=userName;
+this.age=age;
+}
+
+getter(),setter()
+-----------------------------------------------
+RestdemoController.java
+--------------------------------------------------
+@RestController
+public class RestdemoController
+{
+private List<WebUser> userList;
+
+public RestdemoController()
+{
+userList= new ArrayList<WebUser>();
+userList.add(new WebUser("vinit",23));
+userList.add(new WebUser("x",53));
+userList.add(new WebUser("y",83));
+userList.add(new WebUser("z",123));
+userList.add(new WebUser("p",213));
+userList.add(new WebUser("q",23));
+}
+
+public WebUser getUserByName(String uname)
+{
+user=userList.stream().filter(wu -> wu.getUserName().equals(uname)).findFirst();
+return user.isPresent() ? user.get() : null;
+}
+
+@Requestmapping(value="/hellorest",method=requestMethod.GET)
+@ResponseBody
+public String sayHello()
+{
+return "hello restful';
+}
+-------------------------------
+jsp:-
+greetPage.jsp
+greetUserPage
+------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
