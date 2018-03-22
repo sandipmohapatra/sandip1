@@ -1,0 +1,173 @@
+spring mvc +hibernate +validation+security+Mysql
+---------------------------------------------------------------------
+maven project :-
+ src ---main---
+java---java.con.example.spring---dao,model,service,controller
+resources--.properties,log4j
+webapp----web-inf---views---.html/.jsp
+           
+pom.xml 
+--------------------------------------------------------------------------------------
+DAO :-
+PersonDAO(interface)
+--------------------------------------
+public interface PersonDAO
+{
+addPerson(Person p);
+updatePerson(Person p);
+List<Person> listPersons();
+Person getPersonById(int id);
+removePerson(int id);
+}
+-----------------------------------------------
+PersonDAOImpl
+------------------------------------
+public class PersonDAOImpl implements PersonDAO
+{
+
+@Override
+addPerson(Person p)
+{
+session.save(p);
+}
+-------------------------
+@Override
+updatePerson(Person p)
+{
+session.update(p);
+}
+-------------------------
+@Override
+List<Person> listPersons()
+{
+for(Person p:resonList)
+{
+print(p);
+}}
+-------------------------------
+@Override
+Person getPersonById(int id)
+{
+Person p=session.load(Person.class,new Integer(id));
+return p;
+}
+----------------------------------------------------------
+@Override
+removePerson(int id);
+{
+Person p=session.load(Person.class,new Integer(id));
+if(null !=p)
+{
+session.delete(p);
+logger.info("person deleted");
+}
+else
+{
+logger.info("person not found");
+}
+-------------------------------------------------------------------
+Model (related to the table)
+----------------
+@Entity
+@Table(name="person")
+public class Person
+{
+@Id
+@Column(name="id")
+@GeneratedValue(strategy=GenerationType.Assigned)
+
+private int id;
+String name,address,country;
+
+getter(),setter();
+
+@override
+public String toString()
+{
+return "id= "+id+,"name ="+name+,"address ="+address;
+}
+}
+--------------------------------
+Service
+-----------------
+PersonService(interface)
+--------------------------------------------
+public interface PersonService
+{
+addPerson(Person p);
+updatePerson(Person p);
+List<Person> listPersons();
+Person getPersonById(int id);
+removePerson(int id);
+}
+---------------------------------------------------
+PersonServiceImpl
+-------------------------------------
+class PersonServiceImpl implements PersionService
+{
+@Override
+@Transactional  <-- it will refer to the interface and it's implemented class
+addPerson(Person p)
+{
+this.personDAO.addPerson(p);
+}
+------------------------------------------------------------------------------
+
+@Override
+@Transactional  <-- it will refer to the interface and it's implemented class
+updatePerson(Person p)
+{
+this.personDAO.updatePerson(p);
+}
+-------------------------------------------------------------------------
+@Override
+@Transactional  <-- it will refer to the interface and it's implemented class
+List<Person> listPersons()
+{
+this.personDAO.listPerson();
+}
+---------------------------------------------------------
+@Override
+@Transactional  <-- it will refer to the interface and it's implemented class
+getPersonById(int id)
+{
+this.personDAO.getPersonById(id);
+}
+-------------------------------------------------------------------
+@override
+@Transactional
+removePerson(int id)
+{
+this.personDAO.removePerson(id);
+}}
+-------------------------------------------------------------------------------------------
+view-------------controller-----------------DAO,SERVICE,MODEL
+---------------------------------------------------------------------------------------------
+CONTROLLER
+-----------------------------
+@Controller
+public class PersonController
+{
+
+private PersonService ps;
+
+@Qualifier(value="PersonService")
+
+@RequestMapping(value ="/person", method=RequestMethod.GET)
+
+public String listPerson(Model m)
+{
+m.addAttribute("person",new Person());
+m.addAttribute("listPerson",this.ps.listPerson());
+return "person";
+}
+---------------------------------------------
+
+
+
+
+
+
+
+
+
