@@ -1,4 +1,4 @@
-spring mvc +hibernate +validation+security+Mysql
+spring mvc +hibernate +validation+security+oracle
 ---------------------------------------------------------------------
 maven project :-
  src ---main---
@@ -40,7 +40,7 @@ session.update(p);
 @Override
 List<Person> listPersons()
 {
-for(Person p:resonList)
+for(Person p:personList)
 {
 print(p);
 }}
@@ -103,7 +103,7 @@ removePerson(int id);
 ---------------------------------------------------
 PersonServiceImpl
 -------------------------------------
-class PersonServiceImpl implements PersionService
+class PersonServiceImpl implements PersonService
 {
 @Override
 @Transactional  <-- it will refer to the interface and it's implemented class
@@ -150,9 +150,7 @@ public class PersonController
 {
 
 private PersonService ps;
-
 @Qualifier(value="PersonService")
-
 @RequestMapping(value ="/person", method=RequestMethod.GET)
 
 public String listPerson(Model m)
@@ -162,6 +160,78 @@ m.addAttribute("listPerson",this.ps.listPerson());
 return "person";
 }
 ---------------------------------------------
+adding/modify person
+------------------------
+@RequestMapping(value="/person/add",method=RequestMethod.POST)
+
+public String addPerson(@ModelAttribute("person") Person p)
+{
+if(p.getId() ==0) //adding new person
+{
+this.personService.addPerson(p);
+}
+else
+{ //existing person we will call update
+this.personService.updatePerson(p);
+}
+return "redirect:/person";
+}
+------------------------------------------------------
+remove person {id}
+---------------------------------
+@RequestMapping("/remove/{id}")
+public String removePerson(@PathVariable("id") int id)
+{
+this.personService.removePerson(int id);
+return "redirect:/person";
+}
+-----------------------------------------------------------
+@RequestMapping("edit/{id}")
+public String editPerson(@PathVariable("id") int id,Model model)
+{
+model.addAttribute("person",this.personService.getPersonById(id));
+model.addAttribute("person",this.personService.listPerson());
+return "person";
+}
+}
+---------------------------------------------------------------
+views:-
+---------------------------
+<form action="/person/add" method="POST">
+id<input type=text>
+name<input type=text>
+address<input type=text>
+country<input type=text>
+<submit>
+</form>
+---------------------------------------------------
+servlet-context.xml
+-----------------------------
+<beans>
+<bean class="org.springframework.web.servlet.view.viewResolver"/>
+<property name="prefix" value="/web-inf/views/">
+<property name="suffix" value=".jsp"|/>
+
+<property name="driverclassname">
+<property name="url" orcale/Mysql>
+<property name="username">
+<property name="password">
+
+
+<beans:props key="hibernate.dialect">
+<beans:props key="hibernate.show_sql">
+---------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
 
 
 
